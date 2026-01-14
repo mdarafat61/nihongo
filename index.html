@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nihongo Quest: JLPT N5 Master</title>
+
+    <style>
+
+        :root {
+
+            --primary: #6C5CE7;
+
+            --accent: #00CEC9;
+
+            --dark: #2D3436;
+
+            --card: #ffffff;
+
+            --text: #2D3436;
+
+            --success: #00B894;
+
+            --error: #FF7675;
+
+            --gold: #FDCB6E;
+
+        }
+
+
+
+        body {
+
+            font-family: 'Segoe UI', sans-serif;
+
+            background-color: var(--dark);
+
+            color: white;
+
+            margin: 0;
+
+            display: flex;
+
+            justify-content: center;
+
+            min-height: 100vh;
+
+            overflow-x: hidden;
+
+            user-select: none;
+
+        }
+
+
+
+        #app {
+
+            width: 100%;
+
+            max-width: 480px;
+
+            background: linear-gradient(180deg, #2D3436 0%, #1e272e 100%);
+
+            min-height: 100vh;
+
+            position: relative;
+
+            display: flex;
+
+            flex-direction: column;
+
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+
+        }
+
+
+
+        /* --- HEADER & STREAK --- */
+
+        .header {
+
+            padding: 20px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            background: rgba(0,0,0,0.2);
+
+        }
+
+
+
+        .streak-box {
+
+            background: rgba(255,100,100,0.2);
+
+            padding: 5px 15px;
+
+            border-radius: 20px;
+
+            border: 1px solid rgba(255,100,100,0.4);
+
+            font-weight: bold;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+        }
+
+
+
+        /* --- HOME MENU --- */
+
+        .menu-grid {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 15px;
+
+            padding: 20px;
+
+            animation: fadeIn 0.5s ease;
+
+        }
+
+
+
+        .menu-card {
+
+            background: rgba(255,255,255,0.05);
+
+            border: 1px solid rgba(255,255,255,0.1);
+
+            border-radius: 15px;
+
+            padding: 20px;
+
+            text-align: center;
+
+            cursor: pointer;
+
+            transition: all 0.2s;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+
+
+        .menu-card:hover {
+
+            transform: translateY(-5px);
+
+            background: rgba(255,255,255,0.1);
+
+            border-color: var(--primary);
+
+        }
+
+
+
+        .menu-card h3 { margin: 10px 0 5px; font-size: 1.1rem; }
+
+        .menu-card p { font-size: 0.8rem; opacity: 0.6; margin: 0; }
+
+        .icon { font-size: 2rem; }
+
+
+
+        /* --- GAMEPLAY UI --- */
+
+        .game-screen {
+
+            display: none; /* Hidden by default */
+
+            flex: 1;
+
+            flex-direction: column;
+
+            padding: 20px;
+
+        }
+
+
+
+        .progress-container {
+
+            width: 100%;
+
+            height: 6px;
+
+            background: rgba(255,255,255,0.1);
+
+            border-radius: 3px;
+
+            margin-bottom: 20px;
+
+        }
+
+        .progress-fill {
+
+            height: 100%;
+
+            background: var(--accent);
+
+            width: 0%;
+
+            transition: width 0.3s;
+
+        }
+
+
+
+        .flashcard {
+
+            background: white;
+
+            color: var(--text);
+
+            border-radius: 20px;
+
+            padding: 40px 20px;
+
+            text-align: center;
+
+            margin-bottom: 20px;
+
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+
+            animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+            position: relative;
+
+        }
+
+
+
+        .main-text { font-size: 4rem; font-weight: 800; line-height: 1.2; }
+
+        .sub-text { font-size: 1rem; color: #636e72; margin-top: 5px; min-height: 1.2em;}
+
+        .badge-icon { position: absolute; top: -10px; right: -10px; font-size: 2rem; display: none; }
+
+
+
+        .options-container {
+
+            display: grid;
+
+            grid-template-columns: 1fr;
+
+            gap: 12px;
+
+        }
+
+
+
+        .option-btn {
+
+            background: rgba(255,255,255,0.08);
+
+            border: 2px solid rgba(255,255,255,0.1);
+
+            color: white;
+
+            padding: 16px;
+
+            border-radius: 12px;
+
+            font-size: 1.1rem;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+            text-align: left;
+
+            position: relative;
+
+        }
+
+
+
+        .option-btn:hover { background: rgba(255,255,255,0.15); }
+
+        .option-btn.correct { background: var(--success); border-color: var(--success); }
+
+        .option-btn.wrong { background: var(--error); border-color: var(--error); }
+
+
+
+        /* --- RESULTS MODAL --- */
+
+        .modal {
+
+            display: none;
+
+            position: fixed;
+
+            top: 0; left: 0; width: 100%; height: 100%;
+
+            background: rgba(0,0,0,0.9);
+
+            z-index: 100;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 20px;
+
+            box-sizing: border-box;
+
+        }
+
+        .modal-content {
+
+            background: #2d3436;
+
+            border: 1px solid #636e72;
+
+            padding: 30px;
+
+            border-radius: 20px;
+
+            text-align: center;
+
+            max-width: 400px;
+
+            width: 100%;
+
+            animation: popIn 0.3s;
+
+        }
+
+        .result-score { font-size: 3rem; font-weight: bold; color: var(--accent); }
+
+        .btn-home { background: var(--primary); color: white; border: none; padding: 12px 30px; border-radius: 25px; font-size: 1.1rem; cursor: pointer; margin-top: 20px; width: 100%; }
+
+
+
+        /* --- ANIMATIONS --- */
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+        .shake { animation: shake 0.3s; }
+
+
+
+        /* Utility */
+
+        .hidden { display: none !important; }
+
+
+
+    </style>
+
+</head>
+
+<body>
+
+
+
+<div id="app">
+
+    
+
+    <div class="header">
+
+        <div style="font-weight:bold; font-size:1.2rem;">🇯🇵 Nihongo Quest</div>
+
+        <div class="streak-box">
+
+            <span>🔥</span> <span id="streak-count">0</span> Day Streak
+
+        </div>
+
+    </div>
+
+
+
+    <div id="home-screen" class="menu-grid">
+
+        <div class="menu-card" onclick="startMode('kana')">
+
+            <div class="icon">あ</div>
+
+            <h3>Kana Drill</h3>
+
+            <p>Hiragana & Katakana</p>
+
+        </div>
+
+        
+
+        <div class="menu-card" onclick="startMode('kanji')">
+
+            <div class="icon">漢</div>
+
+            <h3>N5 Kanji</h3>
+
+            <p>Meanings & Readings</p>
+
+        </div>
+
+
+
+        <div class="menu-card" onclick="startMode('vocab')">
+
+            <div class="icon">語</div>
+
+            <h3>Vocabulary</h3>
+
+            <p>Essential Words</p>
+
+        </div>
+
+
+
+        <div class="menu-card" style="border-color: var(--gold);" onclick="startMode('exam')">
+
+            <div class="icon">🏆</div>
+
+            <h3>JLPT Exam</h3>
+
+            <p>20 Mixed Questions</p>
+
+        </div>
+
+
+
+        <div style="grid-column: 1 / -1; margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;">
+
+            <div style="font-size: 0.9rem; margin-bottom: 10px;">🏆 Badges Earned</div>
+
+            <div id="badge-container" style="display:flex; gap:10px; font-size: 1.5rem;">
+
+                <span style="opacity:0.2" id="badge-n5">🏅</span>
+
+                <span style="opacity:0.2" id="badge-speed">⚡</span>
+
+                <span style="opacity:0.2" id="badge-streak">🔥</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div id="game-screen" class="game-screen">
+
+        <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:0.9rem; opacity:0.7;">
+
+            <span id="mode-label">Mode</span>
+
+            <span id="q-counter">1/10</span>
+
+        </div>
+
+        
+
+        <div class="progress-container">
+
+            <div class="progress-fill" id="progress-bar"></div>
+
+        </div>
+
+
+
+        <div class="flashcard" id="card">
+
+            <div class="badge-icon" id="card-badge">✨</div>
+
+            <div class="main-text" id="question-text">?</div>
+
+            <div class="sub-text" id="question-sub"></div>
+
+        </div>
+
+
+
+        <div class="options-container" id="options-box">
+
+            </div>
+
+
+
+        <button onclick="goHome()" style="margin-top: auto; background:none; border:none; color:white; opacity:0.5; cursor:pointer;">Exit to Menu</button>
+
+    </div>
+
+
+
+    <div id="result-modal" class="modal">
+
+        <div class="modal-content">
+
+            <div style="font-size: 3rem; margin-bottom: 10px;">🎉</div>
+
+            <h2>Session Complete!</h2>
+
+            <div class="result-score" id="final-score">85%</div>
+
+            <p id="result-msg">Great job!</p>
+
+            <button class="btn-home" onclick="goHome()">Back to Home</button>
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+
+<script>
+
+    // --- DATABASE (Mini N5 Set) ---
+
+    const DB = {
+
+        kana: [
+
+            // HIRAGANA
+
+{ q: 'あ', a: 'a', type: 'h' }, { q: 'い', a: 'i', type: 'h' }, { q: 'う', a: 'u', type: 'h' }, { q: 'え', a: 'e', type: 'h' }, { q: 'お', a: 'o', type: 'h' },
+
+{ q: 'か', a: 'ka', type: 'h' }, { q: 'き', a: 'ki', type: 'h' }, { q: 'く', a: 'ku', type: 'h' }, { q: 'け', a: 'ke', type: 'h' }, { q: 'こ', a: 'ko', type: 'h' },
+
+{ q: 'さ', a: 'sa', type: 'h' }, { q: 'し', a: 'shi', type: 'h' }, { q: 'す', a: 'su', type: 'h' }, { q: 'せ', a: 'se', type: 'h' }, { q: 'そ', a: 'so', type: 'h' },
+
+{ q: 'た', a: 'ta', type: 'h' }, { q: 'ち', a: 'chi', type: 'h' }, { q: 'つ', a: 'tsu', type: 'h' }, { q: 'て', a: 'te', type: 'h' }, { q: 'と', a: 'to', type: 'h' },
+
+{ q: 'な', a: 'na', type: 'h' }, { q: 'に', a: 'ni', type: 'h' }, { q: 'ぬ', a: 'nu', type: 'h' }, { q: 'ね', a: 'ne', type: 'h' }, { q: 'の', a: 'no', type: 'h' },
+
+{ q: 'は', a: 'ha', type: 'h' }, { q: 'ひ', a: 'hi', type: 'h' }, { q: 'ふ', a: 'fu', type: 'h' }, { q: 'へ', a: 'he', type: 'h' }, { q: 'ほ', a: 'ho', type: 'h' },
+
+{ q: 'ま', a: 'ma', type: 'h' }, { q: 'み', a: 'mi', type: 'h' }, { q: 'む', a: 'mu', type: 'h' }, { q: 'め', a: 'me', type: 'h' }, { q: 'も', a: 'mo', type: 'h' },
+
+{ q: 'や', a: 'ya', type: 'h' }, { q: 'ゆ', a: 'yu', type: 'h' }, { q: 'よ', a: 'yo', type: 'h' },
+
+{ q: 'ら', a: 'ra', type: 'h' }, { q: 'り', a: 'ri', type: 'h' }, { q: 'る', a: 'ru', type: 'h' }, { q: 'れ', a: 're', type: 'h' }, { q: 'ろ', a: 'ro', type: 'h' },
+
+{ q: 'わ', a: 'wa', type: 'h' }, { q: 'を', a: 'wo', type: 'h' }, { q: 'ん', a: 'n', type: 'h' },
+
+
+
+// HIRAGANA DAKUTEN / HANDAKUTEN
+
+{ q: 'が', a: 'ga', type: 'h' }, { q: 'ぎ', a: 'gi', type: 'h' }, { q: 'ぐ', a: 'gu', type: 'h' }, { q: 'げ', a: 'ge', type: 'h' }, { q: 'ご', a: 'go', type: 'h' },
+
+{ q: 'ざ', a: 'za', type: 'h' }, { q: 'じ', a: 'ji', type: 'h' }, { q: 'ず', a: 'zu', type: 'h' }, { q: 'ぜ', a: 'ze', type: 'h' }, { q: 'ぞ', a: 'zo', type: 'h' },
+
+{ q: 'だ', a: 'da', type: 'h' }, { q: 'ぢ', a: 'ji', type: 'h' }, { q: 'づ', a: 'zu', type: 'h' }, { q: 'で', a: 'de', type: 'h' }, { q: 'ど', a: 'do', type: 'h' },
+
+{ q: 'ば', a: 'ba', type: 'h' }, { q: 'び', a: 'bi', type: 'h' }, { q: 'ぶ', a: 'bu', type: 'h' }, { q: 'べ', a: 'be', type: 'h' }, { q: 'ぼ', a: 'bo', type: 'h' },
+
+{ q: 'ぱ', a: 'pa', type: 'h' }, { q: 'ぴ', a: 'pi', type: 'h' }, { q: 'ぷ', a: 'pu', type: 'h' }, { q: 'ぺ', a: 'pe', type: 'h' }, { q: 'ぽ', a: 'po', type: 'h' },
+
+
+
+// KATAKANA
+
+{ q: 'ア', a: 'a', type: 'k' }, { q: 'イ', a: 'i', type: 'k' }, { q: 'ウ', a: 'u', type: 'k' }, { q: 'エ', a: 'e', type: 'k' }, { q: 'オ', a: 'o', type: 'k' },
+
+{ q: 'カ', a: 'ka', type: 'k' }, { q: 'キ', a: 'ki', type: 'k' }, { q: 'ク', a: 'ku', type: 'k' }, { q: 'ケ', a: 'ke', type: 'k' }, { q: 'コ', a: 'ko', type: 'k' },
+
+{ q: 'サ', a: 'sa', type: 'k' }, { q: 'シ', a: 'shi', type: 'k' }, { q: 'ス', a: 'su', type: 'k' }, { q: 'セ', a: 'se', type: 'k' }, { q: 'ソ', a: 'so', type: 'k' },
+
+{ q: 'タ', a: 'ta', type: 'k' }, { q: 'チ', a: 'chi', type: 'k' }, { q: 'ツ', a: 'tsu', type: 'k' }, { q: 'テ', a: 'te', type: 'k' }, { q: 'ト', a: 'to', type: 'k' },
+
+{ q: 'ナ', a: 'na', type: 'k' }, { q: 'ニ', a: 'ni', type: 'k' }, { q: 'ヌ', a: 'nu', type: 'k' }, { q: 'ネ', a: 'ne', type: 'k' }, { q: 'ノ', a: 'no', type: 'k' },
+
+{ q: 'ハ', a: 'ha', type: 'k' }, { q: 'ヒ', a: 'hi', type: 'k' }, { q: 'フ', a: 'fu', type: 'k' }, { q: 'ヘ', a: 'he', type: 'k' }, { q: 'ホ', a: 'ho', type: 'k' },
+
+{ q: 'マ', a: 'ma', type: 'k' }, { q: 'ミ', a: 'mi', type: 'k' }, { q: 'ム', a: 'mu', type: 'k' }, { q: 'メ', a: 'me', type: 'k' }, { q: 'モ', a: 'mo', type: 'k' },
+
+{ q: 'ヤ', a: 'ya', type: 'k' }, { q: 'ユ', a: 'yu', type: 'k' }, { q: 'ヨ', a: 'yo', type: 'k' },
+
+{ q: 'ラ', a: 'ra', type: 'k' }, { q: 'リ', a: 'ri', type: 'k' }, { q: 'ル', a: 'ru', type: 'k' }, { q: 'レ', a: 're', type: 'k' }, { q: 'ロ', a: 'ro', type: 'k' },
+
+{ q: 'ワ', a: 'wa', type: 'k' }, { q: 'ヲ', a: 'wo', type: 'k' }, { q: 'ン', a: 'n', type: 'k' },
+
+
+
+// KATAKANA DAKUTEN / HANDAKUTEN
+
+{ q: 'ガ', a: 'ga', type: 'k' }, { q: 'ギ', a: 'gi', type: 'k' }, { q: 'グ', a: 'gu', type: 'k' }, { q: 'ゲ', a: 'ge', type: 'k' }, { q: 'ゴ', a: 'go', type: 'k' },
+
+{ q: 'ザ', a: 'za', type: 'k' }, { q: 'ジ', a: 'ji', type: 'k' }, { q: 'ズ', a: 'zu', type: 'k' }, { q: 'ゼ', a: 'ze', type: 'k' }, { q: 'ゾ', a: 'zo', type: 'k' },
+
+{ q: 'ダ', a: 'da', type: 'k' }, { q: 'ヂ', a: 'ji', type: 'k' }, { q: 'ヅ', a: 'zu', type: 'k' }, { q: 'デ', a: 'de', type: 'k' }, { q: 'ド', a: 'do', type: 'k' },
+
+{ q: 'バ', a: 'ba', type: 'k' }, { q: 'ビ', a: 'bi', type: 'k' }, { q: 'ブ', a: 'bu', type: 'k' }, { q: 'ベ', a: 'be', type: 'k' }, { q: 'ボ', a: 'bo', type: 'k' },
+
+{ q: 'パ', a: 'pa', type: 'k' }, { q: 'ピ', a: 'pi', type: 'k' }, { q: 'プ', a: 'pu', type: 'k' }, { q: 'ペ', a: 'pe', type: 'k' }, { q: 'ポ', a: 'po', type: 'k' }
+
+        ],
+
+        kanji: [
+
+            { q: '日', a: 'Day / Sun', sub: 'nichi' }, { q: '一', a: 'One', sub: 'ichi' },
+
+            { q: '国', a: 'Country', sub: 'koku' }, { q: '人', a: 'Person', sub: 'jin' },
+
+            { q: '年', a: 'Year', sub: 'nen' }, { q: '大', a: 'Big', sub: 'dai' },
+
+            { q: '本', a: 'Book / Origin', sub: 'hon' }, { q: '中', a: 'Inside / Middle', sub: 'naka' },
+
+            { q: '長', a: 'Long / Leader', sub: 'naga' }, { q: '出', a: 'Exit', sub: 'de' },
+
+            { q: '三', a: 'Three', sub: 'san' }, { q: '時', a: 'Time', sub: 'ji' }
+
+        ],
+
+        vocab: [
+
+            { q: '猫', a: 'Cat', sub: 'neko' }, { q: '犬', a: 'Dog', sub: 'inu' },
+
+            { q: '学生', a: 'Student', sub: 'gakusei' }, { q: '先生', a: 'Teacher', sub: 'sensei' },
+
+            { q: '学校', a: 'School', sub: 'gakkou' }, { q: '食べる', a: 'To Eat', sub: 'taberu' },
+
+            { q: '飲む', a: 'To Drink', sub: 'nomu' }, { q: '今日', a: 'Today', sub: 'kyou' },
+
+            { q: '明日', a: 'Tomorrow', sub: 'ashita' }, { q: '私', a: 'I / Me', sub: 'watashi' }
+
+        ]
+
+    };
+
+
+
+    // --- STATE MANAGEMENT ---
+
+    let state = {
+
+        mode: null, // 'kana', 'kanji', 'vocab', 'exam'
+
+        pool: [],
+
+        currentQ: null,
+
+        score: 0,
+
+        total: 0,
+
+        streak: 0,
+
+        badges: []
+
+    };
+
+
+
+    // --- INITIALIZATION ---
+
+    window.onload = () => {
+
+        loadUserData();
+
+        updateHomeUI();
+
+    };
+
+
+
+    function loadUserData() {
+
+        const data = JSON.parse(localStorage.getItem('nihongoQuest')) || {};
+
+        
+
+        // Streak Logic
+
+        const today = new Date().toDateString();
+
+        if (data.lastLogin !== today) {
+
+            const yesterday = new Date();
+
+            yesterday.setDate(yesterday.getDate() - 1);
+
+            
+
+            if (data.lastLogin === yesterday.toDateString()) {
+
+                state.streak = (data.streak || 0) + 1;
+
+            } else {
+
+                state.streak = 1; // Reset or Start
+
+            }
+
+            saveData(today);
+
+        } else {
+
+            state.streak = data.streak || 1;
+
+        }
+
+
+
+        state.badges = data.badges || [];
+
+    }
+
+
+
+    function saveData(dateString) {
+
+        localStorage.setItem('nihongoQuest', JSON.stringify({
+
+            streak: state.streak,
+
+            lastLogin: dateString || new Date().toDateString(),
+
+            badges: state.badges
+
+        }));
+
+    }
+
+
+
+    function updateHomeUI() {
+
+        document.getElementById('streak-count').innerText = state.streak;
+
+        if(state.badges.includes('n5')) document.getElementById('badge-n5').style.opacity = '1';
+
+        if(state.badges.includes('speed')) document.getElementById('badge-speed').style.opacity = '1';
+
+        if(state.streak >= 7) document.getElementById('badge-streak').style.opacity = '1';
+
+    }
+
+
+
+    // --- GAME ENGINE ---
+
+    function startMode(mode) {
+
+        state.mode = mode;
+
+        state.score = 0;
+
+        state.total = 0;
+
+
+
+        // Build Question Pool
+
+        if (mode === 'exam') {
+
+            // Mix all arrays, take 20 random
+
+            let all = [...DB.kana, ...DB.kanji, ...DB.vocab];
+
+            state.pool = shuffle(all).slice(0, 20);
+
+        } else {
+
+            // Infinite mode for practice
+
+            state.pool = [...DB[mode]]; 
+
+        }
+
+
+
+        document.getElementById('home-screen').classList.add('hidden');
+
+        document.getElementById('game-screen').style.display = 'flex';
+
+        document.getElementById('mode-label').innerText = mode.toUpperCase() + (mode === 'exam' ? ' TEST' : ' PRACTICE');
+
+        
+
+        nextCard();
+
+    }
+
+
+
+    function nextCard() {
+
+        // Exam Mode: Check if done
+
+        if (state.mode === 'exam' && state.pool.length === 0) {
+
+            endGame();
+
+            return;
+
+        }
+
+
+
+        // Infinite Mode: Refill if empty
+
+        if (state.mode !== 'exam' && state.pool.length === 0) {
+
+            state.pool = [...DB[state.mode]];
+
+        }
+
+
+
+        // Pick Card
+
+        const index = Math.floor(Math.random() * state.pool.length);
+
+        state.currentQ = state.pool[index];
+
+        
+
+        // Remove from pool if Exam
+
+        if (state.mode === 'exam') {
+
+            state.pool.splice(index, 1);
+
+        }
+
+
+
+        renderCard();
+
+    }
+
+
+
+    function renderCard() {
+
+        const q = state.currentQ;
+
+        const card = document.getElementById('card');
+
+        
+
+        // Animation Reset
+
+        card.style.animation = 'none';
+
+        card.offsetHeight; /* trigger reflow */
+
+        card.style.animation = 'slideIn 0.4s';
+
+
+
+        document.getElementById('question-text').innerText = q.q;
+
+        document.getElementById('question-sub').innerText = q.sub || ""; // Subtext for Kanji/Vocab reading
+
+        
+
+        // Update Counter
+
+        state.total++;
+
+        const displayTotal = state.mode === 'exam' ? 20 : state.total;
+
+        document.getElementById('q-counter').innerText = `${state.total} / ${state.mode === 'exam' ? 20 : '∞'}`;
+
+        document.getElementById('progress-bar').style.width = (state.total / displayTotal * 100) + "%";
+
+
+
+        generateOptions(q);
+
+    }
+
+
+
+    function generateOptions(correct) {
+
+        // Pick 3 wrong answers from the SAME category (important!)
+
+        let dataset;
+
+        if (state.mode === 'kana') dataset = DB.kana;
+
+        else if (state.mode === 'kanji') dataset = DB.kanji;
+
+        else if (state.mode === 'vocab') dataset = DB.vocab;
+
+        else {
+
+            // For Exam, detect type of current question
+
+            if(DB.kana.includes(correct)) dataset = DB.kana;
+
+            else if(DB.kanji.includes(correct)) dataset = DB.kanji;
+
+            else dataset = DB.vocab;
+
+        }
+
+
+
+        let options = [correct];
+
+        while(options.length < 4) {
+
+            let r = dataset[Math.floor(Math.random() * dataset.length)];
+
+            if(!options.includes(r)) options.push(r);
+
+        }
+
+        
+
+        options = shuffle(options);
+
+
+
+        const container = document.getElementById('options-box');
+
+        container.innerHTML = '';
+
+
+
+        options.forEach(opt => {
+
+            const btn = document.createElement('button');
+
+            btn.className = 'option-btn';
+
+            btn.innerText = opt.a;
+
+            btn.onclick = () => handleAnswer(opt, btn);
+
+            container.appendChild(btn);
+
+        });
+
+    }
+
+
+
+    function handleAnswer(selected, btn) {
+
+        // Prevent double clicking
+
+        if (btn.classList.contains('correct') || btn.classList.contains('wrong')) return;
+
+
+
+        const isCorrect = selected === state.currentQ;
+
+        
+
+        // Visual Feedback
+
+        const allBtns = document.querySelectorAll('.option-btn');
+
+        allBtns.forEach(b => {
+
+            if (b.innerText === state.currentQ.a) b.classList.add('correct');
+
+        });
+
+
+
+        if (isCorrect) {
+
+            state.score++;
+
+            playSound('correct');
+
+        } else {
+
+            btn.classList.add('wrong');
+
+            document.getElementById('card').classList.add('shake');
+
+            setTimeout(() => document.getElementById('card').classList.remove('shake'), 500);
+
+            playSound('wrong');
+
+        }
+
+
+
+        // Voice
+
+        if (state.currentQ.sub || state.currentQ.q.length < 3) {
+
+            // Prioritize reading if available (sub), else the char itself
+
+            const textToSpeak = state.currentQ.sub || state.currentQ.q;
+
+            speak(textToSpeak);
+
+        }
+
+
+
+        setTimeout(nextCard, isCorrect ? 800 : 2000);
+
+    }
+
+
+
+    function endGame() {
+
+        const modal = document.getElementById('result-modal');
+
+        const percentage = Math.round((state.score / 20) * 100);
+
+        
+
+        document.getElementById('final-score').innerText = percentage + "%";
+
+        
+
+        let msg = "Keep practicing!";
+
+        if (percentage >= 90) {
+
+            msg = "Amazing! Mastery achieved!";
+
+            unlockBadge('n5');
+
+        } else if (percentage >= 70) {
+
+            msg = "Good job! You passed.";
+
+        }
+
+        document.getElementById('result-msg').innerText = msg;
+
+
+
+        modal.style.display = 'flex';
+
+    }
+
+
+
+    function unlockBadge(id) {
+
+        if (!state.badges.includes(id)) {
+
+            state.badges.push(id);
+
+            saveData();
+
+            // Show badge animation?
+
+        }
+
+    }
+
+
+
+    function goHome() {
+
+        document.getElementById('game-screen').style.display = 'none';
+
+        document.getElementById('result-modal').style.display = 'none';
+
+        document.getElementById('home-screen').classList.remove('hidden');
+
+        updateHomeUI();
+
+    }
+
+
+
+    // --- UTILS ---
+
+    function shuffle(array) {
+
+        return array.sort(() => Math.random() - 0.5);
+
+    }
+
+
+
+    function speak(text) {
+
+        const u = new SpeechSynthesisUtterance(text);
+
+        u.lang = 'ja-JP';
+
+        window.speechSynthesis.speak(u);
+
+    }
+
+
+
+    function playSound(type) {
+
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+        const osc = ctx.createOscillator();
+
+        const gain = ctx.createGain();
+
+        osc.connect(gain);
+
+        gain.connect(ctx.destination);
+
+
+
+        const now = ctx.currentTime;
+
+        if (type === 'correct') {
+
+            osc.frequency.setValueAtTime(600, now);
+
+            osc.frequency.exponentialRampToValueAtTime(1200, now + 0.1);
+
+            gain.gain.setValueAtTime(0.1, now);
+
+            gain.gain.linearRampToValueAtTime(0, now + 0.15);
+
+        } else {
+
+            osc.type = 'sawtooth';
+
+            osc.frequency.setValueAtTime(150, now);
+
+            osc.frequency.linearRampToValueAtTime(100, now + 0.2);
+
+            gain.gain.setValueAtTime(0.1, now);
+
+            gain.gain.linearRampToValueAtTime(0, now + 0.2);
+
+        }
+
+        osc.start();
+
+        osc.stop(now + 0.3);
+
+    }
+
+
+
+</script>
+
+</body>
+
+</html>
