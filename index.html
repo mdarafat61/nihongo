@@ -623,19 +623,54 @@
         ],
 
         kanji: [
+    // Numbers
+    { q: '一', a: 'One', sub: 'ichi' }, { q: '二', a: 'Two', sub: 'ni' }, { q: '三', a: 'Three', sub: 'san' },
+    { q: '四', a: 'Four', sub: 'yon / shi' }, { q: '五', a: 'Five', sub: 'go' }, { q: '六', a: 'Six', sub: 'roku' },
+    { q: '七', a: 'Seven', sub: 'nana / shichi' }, { q: '八', a: 'Eight', sub: 'hachi' }, { q: '九', a: 'Nine', sub: 'kyuu' },
+    { q: '十', a: 'Ten', sub: 'juu' }, { q: '百', a: 'Hundred', sub: 'hyaku' }, { q: '千', a: 'Thousand', sub: 'sen' },
+    { q: '万', a: 'Ten Thousand', sub: 'man' }, { q: '円', a: 'Yen / Circle', sub: 'en' },
 
-            { q: '日', a: 'Day / Sun', sub: 'nichi' }, { q: '一', a: 'One', sub: 'ichi' },
+    // Time & Calendar
+    { q: '日', a: 'Day / Sun', sub: 'nichi' }, { q: '月', a: 'Month / Moon', sub: 'getsu' }, { q: '火', a: 'Fire / Tuesday', sub: 'ka' },
+    { q: '水', a: 'Water / Wednesday', sub: 'sui' }, { q: '木', a: 'Wood / Thursday', sub: 'moku' }, { q: '金', a: 'Gold / Friday', sub: 'kin' },
+    { q: '土', a: 'Earth / Saturday', sub: 'do' }, { q: '年', a: 'Year', sub: 'nen' }, { q: '時', a: 'Time / Hour', sub: 'ji' },
+    { q: '分', a: 'Minute / Part', sub: 'fun / pun' }, { q: '午', a: 'Noon', sub: 'go' }, { q: '前', a: 'Before / Front', sub: 'mae' },
+    { q: '後', a: 'After / Behind', sub: 'go / ato' }, { q: '今', a: 'Now', sub: 'ima' }, { q: '週', a: 'Week', sub: 'shuu' },
+    { q: '何', a: 'What', sub: 'nani / nan' },
 
-            { q: '国', a: 'Country', sub: 'koku' }, { q: '人', a: 'Person', sub: 'jin' },
+    // People & Body
+    { q: '人', a: 'Person', sub: 'jin / hito' }, { q: '子', a: 'Child', sub: 'ko' }, { q: '女', a: 'Woman', sub: 'onna' },
+    { q: '男', a: 'Man', sub: 'otoko' }, { q: '父', a: 'Father', sub: 'chichi' }, { q: '母', a: 'Mother', sub: 'haha' },
+    { q: '友', a: 'Friend', sub: 'tomo' }, { q: '足', a: 'Leg / Foot', sub: 'ashi' }, { q: '手', a: 'Hand', sub: 'te' },
+    { q: '目', a: 'Eye', sub: 'me' }, { q: '耳', a: 'Ear', sub: 'mimi' }, { q: '口', a: 'Mouth', sub: 'kuchi' },
 
-            { q: '年', a: 'Year', sub: 'nen' }, { q: '大', a: 'Big', sub: 'dai' },
+    // Nature & Directions
+    { q: '山', a: 'Mountain', sub: 'yama' }, { q: '川', a: 'River', sub: 'kawa' }, { q: '田', a: 'Rice Field', sub: 'ta' },
+    { q: '天', a: 'Heaven / Sky', sub: 'ten' }, { q: '空', a: 'Sky / Empty', sub: 'sora' }, { q: '気', a: 'Spirit / Energy', sub: 'ki' },
+    { q: '雨', a: 'Rain', sub: 'ame' }, { q: '花', a: 'Flower', sub: 'hana' }, { q: '国', a: 'Country', sub: 'koku' },
+    { q: '上', a: 'Up / Above', sub: 'ue' }, { q: '下', a: 'Down / Below', sub: 'shita' }, { q: '左', a: 'Left', sub: 'hidari' },
+    { q: '右', a: 'Right', sub: 'migi' }, { q: '中', a: 'Middle / Inside', sub: 'naka' }, { q: '外', a: 'Outside', sub: 'soto' },
+    { q: '北', a: 'North', sub: 'kita' }, { q: '南', a: 'South', sub: 'minami' }, { q: '東', a: 'East', sub: 'higashi' },
+    { q: '西', a: 'West', sub: 'nishi' },
 
-            { q: '本', a: 'Book / Origin', sub: 'hon' }, { q: '中', a: 'Inside / Middle', sub: 'naka' },
+    // School & Activities
+    { q: '本', a: 'Book / Origin', sub: 'hon' }, { q: '学', a: 'Study / Learn', sub: 'gaku' }, { q: '生', a: 'Life / Student', sub: 'sei' },
+    { q: '先', a: 'Previous / Ahead', sub: 'sen' }, { q: '校', a: 'School', sub: 'kou' }, { q: '名', a: 'Name', sub: 'na' },
+    { q: '語', a: 'Language / Word', sub: 'go' }, { q: '字', a: 'Character / Letter', sub: 'ji' }, { q: '文', a: 'Sentence / Writing', sub: 'bun' },
+    { q: '読', a: 'Read', sub: 'yo-mu' }, { q: '書', a: 'Write', sub: 'ka-ku' }, { q: '話', a: 'Speak', sub: 'hana-su' },
+    { q: '聞', a: 'Listen', sub: 'ki-ku' }, { q: '見', a: 'See / Watch', sub: 'mi-ru' }, { q: '食', a: 'Eat', sub: 'ta-beru' },
+    { q: '飲', a: 'Drink', sub: 'no-mu' }, { q: '買', a: 'Buy', sub: 'ka-u' }, { q: '行', a: 'Go', sub: 'i-ku' },
+    { q: '来', a: 'Come', sub: 'ku-ru' }, { q: '出', a: 'Exit / Leave', sub: 'de-ru' }, { q: '入', a: 'Enter', sub: 'hai-ru' },
+    { q: '立', a: 'Stand', sub: 'ta-tsu' }, { q: '休', a: 'Rest / Holiday', sub: 'yasu-mu' },
 
-            { q: '長', a: 'Long / Leader', sub: 'naga' }, { q: '出', a: 'Exit', sub: 'de' },
-
-            { q: '三', a: 'Three', sub: 'san' }, { q: '時', a: 'Time', sub: 'ji' }
-
+    // Descriptions & Places
+    { q: '大', a: 'Big', sub: 'dai' }, { q: '小', a: 'Small', sub: 'shou' }, { q: '高', a: 'High / Expensive', sub: 'takai' },
+    { q: '安', a: 'Cheap / Safe', sub: 'yasui' }, { q: '新', a: 'New', sub: 'shin' }, { q: '古', a: 'Old', sub: 'furu' },
+    { q: '長', a: 'Long', sub: 'naga' }, { q: '多', a: 'Many', sub: 'ooi' }, { q: '少', a: 'Few / Little', sub: 'sukunai' },
+    { q: '白', a: 'White', sub: 'shiro' }, { q: '黒', a: 'Black', sub: 'kuro' }, { q: '赤', a: 'Red', sub: 'aka' },
+    { q: '青', a: 'Blue', sub: 'ao' }, { q: '電', a: 'Electricity', sub: 'den' }, { q: '車', a: 'Car', sub: 'kuruma' },
+    { q: '店', a: 'Shop', sub: 'mise' }, { q: '道', a: 'Road / Path', sub: 'michi' }, { q: '社', a: 'Company / Shrine', sub: 'sha' },
+    { q: '駅', a: 'Station', sub: 'eki' }, { q: '万', a: 'Ten Thousand', sub: 'man' }
         ],
 
         vocab: [
